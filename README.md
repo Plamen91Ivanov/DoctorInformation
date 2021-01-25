@@ -1,6 +1,6 @@
 # DocInfo
 
-A simple asp.net core MVC app  
+Simple asp.net core MVC app  
 
 https://docinfo.azurewebsites.net/
 
