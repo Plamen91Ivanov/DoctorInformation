@@ -102,7 +102,6 @@ namespace SSN.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteComment(int postId, string name)
         {
-
             var deletePost = await this.postsService.DeleteAsync(postId);
 
             return this.RedirectToAction("GetByName", new { name = name });
