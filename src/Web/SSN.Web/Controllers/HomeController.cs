@@ -18,7 +18,7 @@
         private readonly IUserAccService userAccService; 
         private readonly IVotesService votesService;
 
-        public HomeController(IUserAccService userAccService, 
+        public HomeController(IUserAccService userAccService,
                               IVotesService votesService)
         {
             this.userAccService = userAccService; 
@@ -27,17 +27,8 @@
 
         public IActionResult Index()
         {
-            //var doctorScr = this.userAccService.AddAsyncDoctor();
-
             var mostVotedDocId = this.userAccService.MostVotedDoc();
             var mostCommentDocId = this.userAccService.MostCommentDoc();
-
-            mostVotedDocId.Add(2);
-            mostVotedDocId.Add(2);
-            mostVotedDocId.Add(2);
-            mostCommentDocId.Add(2);
-            mostCommentDocId.Add(2);
-            mostCommentDocId.Add(2);
 
             var mostVotedDoctors = new UsersAccViewModel
             {

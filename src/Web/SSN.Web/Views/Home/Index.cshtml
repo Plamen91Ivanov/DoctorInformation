@@ -9,6 +9,7 @@
 
 @{
     this.ViewData["Title"] = "DOCINFO.BG";
+    var number = 0;
 }
 <style>
     input {
@@ -68,7 +69,7 @@
         justify-content: center;
         text-align: center;
     }
-    
+
 
     .doctor-information {
         display: flex;
@@ -114,7 +115,7 @@
 
     .card-comment {
         color: #252db8;
-        margin-left:10px;
+        margin-left: 10px;
     }
 
     h3 {
@@ -133,22 +134,23 @@
     .home-down-vote {
         margin: 5px 0 0 10px;
     }
-    .index-info{
-        margin-top:50px;
+
+    .index-info {
+        margin-top: 50px;
     }
 </style>
 
 @if ((this.User.Identity.Name) == "user1@gmail.com")
 {
-    <h1></h1>
+<h1></h1>
 }
 
-<div class="home-box row"> 
+<div class="home-box row">
     <div class="container-fluid col-md-4">
         <div class="index-info">
             <h3>Намерете информация за даден лекар или споделете вашето мнение</h3>
         </div>
-    </div> 
+    </div>
     <div class="container-fluid col-md-6" id="search-box">
         <div class="search-form">
             <form method="post" asp-controller="doctors" asp-action="doctorResult">
@@ -160,6 +162,7 @@
                 </div>
                 <div class="search-specialty">
                     <select class="form-control form-control-lg border border-primary" placeholder=".input-lg " id="specialty" name="specialty">
+                        <option>Специалност</option>
                         <option>Ортопедия и травматология</option>
                         <option>Коремна хирургия</option>
                         <option>Образна диагностика</option>
@@ -182,17 +185,10 @@
             </form>
         </div>
     </div>
-     
-
-
 </div>
 
-
-
-
-
-
 <hr />
+
 <div class="row">
     <div class="col-md-10">
         <div class="top-doctors row">
@@ -200,53 +196,53 @@
                 <h3>Лекари с най-много коментари</h3>
                 <hr />
                 @foreach (var doctor in Model.Doc)
-                {
-                    <div class="card">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <img class="card-img-top" src="~/images/blank_user.png" alt="Card image cap">
+                    {
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img class="card-img-top" src="~/images/blank_user.png" alt="Card image cap">
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@doctor.Name</h5>
+                                        <p class="card-text">@doctor.Specialty</p>
+                                        <a href="/doctors/@doctor.Url" class="btn btn-primary">Профил</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="card-body">
-                                    <h5 class="card-title">@doctor.Name</h5>
-                                    <p class="card-text">@doctor.Specialty</p>
-                                    <a href="@doctor.Url" class="btn btn-primary">Профил</a>
+                            <div class="row">
+                                <div class="col-xl-5">
+                                    <div class="row">
+                                        @if (this.SignInManager.IsSignedIn(this.User))
+                                        {
+                                            <div class="col-xl-6">
+                                                <a>  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; <span id="upVotesCount">@VoteUserService.GetVote(doctor.Id)</span></h4></a>
+                                            </div>
+                                            <div class="col-xl-6 some-class">
+                                                <a  > <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; <span id="downVotesCount}">@Math.Abs(VoteUserService.GetDownVote(doctor.Id))</span></h4></a>
+                                            </div>
+                                            
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xl-6">
+                                                <a   data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp;  <span id="upVotesCount1">@VoteUserService.GetVote(doctor.Id)</span></h4></a>
+                                            </div>
+                                            <div class="col-xl-6">
+                                                <a    data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; <span id="downVotesCount1">@Math.Abs(VoteUserService.GetDownVote(doctor.Id))</span></h4></a>
+                                            </div>
+
+                                        }
+                                        @{number++;}
+                                    </div>
+                                </div>
+                                <div class="col-xl-5">
+                                    <h4 class="card-comment"><i class="fas fa-comment"></i>@doctor.PostsCount</h4>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-xl-5">
-                                <div class="row">
-                                    @if (this.SignInManager.IsSignedIn(this.User))
-                                    {
 
-                                        <div class="col-xl-6">
-                                            <a href="#" onclick="sendVote(@doctor.Id,true)">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(doctor.Id)</h4></a>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <a href="#" onclick="sendVote(@doctor.Id, false)"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(doctor.Id))</h4></a>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-xl-6">
-                                            <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(doctor.Id)</h4></a>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(doctor.Id))</h4></a>
-
-                                        </div>
-
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-xl-5">
-                                <h4 class="card-comment"><i class="fas fa-comment"></i>@doctor.PostsCount</h4>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr />
+                <hr />
                 }
             </div>
             <div class="col-xl-6">
@@ -254,50 +250,49 @@
                 <hr />
                 @foreach (var doctor in Model.Users)
                 {
-                    <div class="card">
-                        <div class="row">
-                            <div class="col-4">
-                                <img class="card-img-top" src="~/images/blank_user.png" alt="Card image cap">
-                            </div>
-                            <div class="col-6">
-                                <div class="card-body">
-                                    <h5 class="card-title">@doctor.Name</h5>
-                                    <p class="card-text">@doctor.Specialty</p>
-                                    <a href="/doctors/@doctor.Url" class="btn btn-primary">Профил</a>
-                                </div>
-                            </div>
+                <div class="card">
+                    <div class="row">
+                        <div class="col-4">
+                            <img class="card-img-top" src="~/images/blank_user.png" alt="Card image cap">
                         </div>
-                        <div class="row">
-                            <div class="col-xl-5">
-                                <div class="row">
-                                    @if (this.SignInManager.IsSignedIn(this.User))
-                                    {
-
-                                        <div class="col-xl-6">
-                                            <a href="#" onclick="sendVote(@doctor.Id,true)">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(doctor.Id)</h4></a>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <a href="#" onclick="sendVote(@doctor.Id, false)"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(doctor.Id))</h4></a>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="col-xl-6">
-                                            <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(doctor.Id)</h4></a>
-                                        </div>
-                                        <div class="col-xl-6">
-                                            <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(doctor.Id))</h4></a>
-
-                                        </div> 
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-xl-3">
-                                <h4 class="card-comment"><i class="fas fa-comment"></i>@doctor.PostsCount</h4>
+                        <div class="col-6">
+                            <div class="card-body">
+                                <h5 class="card-title">@doctor.Name</h5>
+                                <p class="card-text">@doctor.Specialty</p>
+                                <a href="/doctors/@doctor.Url" class="btn btn-primary">Профил</a>
                             </div>
                         </div>
                     </div>
-                    <hr />
+                    <div class="row">
+                        <div class="col-xl-5">
+                            <div class="row">
+                                @if (this.SignInManager.IsSignedIn(this.User))
+                                    {
+                                <div class="col-xl-6">
+                                    <a href="#" onclick="sendVote(@doctor.Id,true)">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp;<span id="upVotesCount">@VoteUserService.GetVote(doctor.Id)</span></h4></a>
+                                </div>
+                                <div class="col-xl-6">
+                                    <a href="#" onclick="sendVote(@doctor.Id, false)"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; <span id="downVotesCount">@Math.Abs(VoteUserService.GetDownVote(doctor.Id))</span></h4></a>
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div class="col-xl-6">
+                                    <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат">  <h4 class="text-success home-up-vote">  <i class="fa fa-thumbs-up"></i>&nbsp; <span id="upVotesCount">@VoteUserService.GetVote(doctor.Id)</span></h4></a>
+                                </div>
+                                <div class="col-xl-6">
+                                    <a href="#" data-toggle="popover" data-trigger="focus" data-content="За да можеш да гласуваш трябва да си логнат"> <h4 class="text-danger home-down-vote"><i class="fa fa-thumbs-down"></i>&nbsp; <span id="downVotesCount">@Math.Abs(VoteUserService.GetDownVote(doctor.Id))</span></h4></a>
+
+                                </div>
+                                    }
+                            </div>
+                        </div>
+                        <div class="col-xl-3">
+                            <h4 class="card-comment"><i class="fas fa-comment"></i>@doctor.PostsCount</h4>
+                        </div>
+                    </div>
+                </div>
+                <hr />
                 }
             </div>
         </div>
@@ -399,9 +394,9 @@
         </ul>
     </nav>*@
 
-<script>
-    function sendVote(userAccId, isUpVote) {
+<script> 
 
+    function sendVote(userAccId, isUpVote) {
         var token = $("#votesForm input[name=__RequestVerificationToken]").val();
         var json = { userAccId: userAccId, isUpVote: isUpVote };
         console.log(json);
@@ -413,8 +408,9 @@
             dataType: "json",
             headers: { 'X-CSRF-TOKEN': token },
             success: function (data) {
-                $("#votesCount").html(data.votesCount);
+                $("#upVotesCount").html(data.upVotesCount);
+                $("#downVotesCount").html(data.votesDownCount);
             }
         });
-    }
+    } 
 </script>

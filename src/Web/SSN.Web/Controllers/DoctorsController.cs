@@ -21,7 +21,7 @@ namespace SSN.Web.Controllers
 
         public IActionResult doctorResult(string search, string region, string specialty, string name, string searchId, int page = 1)
         {
-            if (search != null && region != null && specialty != "Specialty")
+            if (search != null && region != null && specialty != "Специалност")
             {
 
             }
@@ -29,11 +29,11 @@ namespace SSN.Web.Controllers
             {
 
             }
-            else if (search != null && specialty != "Specialty")
+            else if (search != null && specialty != "Специалност")
             {
 
             }
-            else if (region != null && specialty != "Specialty")
+            else if (region != null && specialty != "Специалност")
             {
 
             }
@@ -92,11 +92,11 @@ namespace SSN.Web.Controllers
                 region = name;
             }
 
-            if (specialty != "Specialty" && specialty != null)
+            if (specialty != "Специалност" && specialty != null)
             {
                 name = null;
             }
-            else if (searchId == "specialty")
+            else if (searchId == "Специалност")
             {
                 specialty = name;
             }
@@ -106,7 +106,7 @@ namespace SSN.Web.Controllers
             this.ViewBag.Region = region;
             this.ViewBag.Specialty = specialty;
 
-            if (search != null && region != null && specialty != "Specialty" && specialty != null)
+            if (search != null && region != null && specialty != "Специалност" && specialty != null)
             {
                 var foundUserAndRegion = new UsersAccViewModel
                 {
@@ -143,7 +143,7 @@ namespace SSN.Web.Controllers
 
                 return this.View(foundUserAndRegion);
             }
-            else if (search != null && specialty != "Specialty" && specialty != null)
+            else if (search != null && specialty != "Специалност" && specialty != null)
             {
                 var foundUserAndRegion = new UsersAccViewModel
                 {
@@ -161,7 +161,7 @@ namespace SSN.Web.Controllers
 
                 return this.View(foundUserAndRegion);
             }
-            else if (specialty != "Specialty" && specialty != null && region != null)
+            else if (specialty != "Специалност" && specialty != null && region != null)
             {
                 var foundUserAndRegion = new UsersAccViewModel
                 {
@@ -214,7 +214,7 @@ namespace SSN.Web.Controllers
 
                 return this.View(foundRegion);
             }
-            else if (specialty != "Specialty" && specialty != null)
+            else if (specialty != "Специалност" && specialty != null)
             {
                 var foundRegion = new UsersAccViewModel
                 {

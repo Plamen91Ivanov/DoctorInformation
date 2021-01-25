@@ -160,13 +160,21 @@
                 <div class="col-auto">
                     <div class="search-specialty">
                         <select class="form-control form-control-range border border-primary" id="specialty" name="specialty">
-                            <option>Specialty</option>
-                            <option>Surgery</option>
-                            <option>Pediatrics</option>
-                            <option>Dermatology</option>
-                            <option>Cardiology</option>
-                            <option>Dermatologists</option>
-                            <option>Общопрактикуващ лекар</option>
+                            <option>Специалност</option>
+                            <option>Ортопедия и травматология</option>
+                            <option>Коремна хирургия</option>
+                            <option>Образна диагностика</option>
+                            <option>Нефрология</option>
+                            <option>Токсикология</option>
+                            <option>Урология</option>
+                            <option>Анестезиология и реанимация</option>
+                            <option>Педиатрия</option>
+                            <option>Кардиология</option>
+                            <option>Вътрешни болести</option>
+                            <option>Гастроентерология</option>
+                            <option>Очни болести</option>
+                            <option>Акушерство и гинекология</option>
+                            <option>Неонатология</option>
                             <option>Хирургия</option>
                         </select>
                     </div>
@@ -188,13 +196,13 @@
 <div class="row">
     <div class="col-md-8">
         <div class="result">
-            @if ((this.ViewBag.Search == null) && (this.ViewBag.Region == null) && (this.ViewBag.Specialty == "Specialty"))
+            @if ((this.ViewBag.Search == null) && (this.ViewBag.Region == null) && (this.ViewBag.Specialty == "Специалност"))
             {
                 <div>
                     <h2>Не сте въвели данни в полетата за търсене</h2>
                 </div>
             }
-            @if ((this.ViewBag.Search != null) && (this.ViewBag.Region != null) && (this.ViewBag.Specialty != "Specialty"))
+            @if ((this.ViewBag.Search != null) && (this.ViewBag.Region != null) && (this.ViewBag.Specialty != "Специалност"))
             {
                 @foreach (var user in Model.Users)
                 {
@@ -293,7 +301,7 @@
                 }
 
             }
-            else if ((this.ViewBag.Search != null) && (this.ViewBag.Specialty != "Specialty"))
+            else if ((this.ViewBag.Search != null) && (this.ViewBag.Specialty != "Специалност"))
             {
                 @foreach (var user in Model.Users)
                 {
@@ -341,7 +349,7 @@
                 }
 
             }
-            else if ((this.ViewBag.Specialty != "Specialty") && (this.ViewBag.Region != null))
+            else if ((this.ViewBag.Specialty != "Специалност") && (this.ViewBag.Region != null))
             {
 
                 @foreach (var user in Model.Users)
@@ -404,10 +412,10 @@
                                     @if (this.SignInManager.IsSignedIn(this.User))
                                     {
                                         <div>
-                                            <a href="#" onclick="sendVote(@user.Id,true)"> <h3 class="text-success">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(user.Id)</h3></a>
+                                            <a href="#" onclick="sendVote(@user.Id,true)"> <h3  class="text-success">  <i class="fa fa-thumbs-up"></i>&nbsp; <span id="upVotesCount">@VoteUserService.GetVote(user.Id)</span></h3></a>
                                         </div>
                                         <div>
-                                            <a href="#" onclick="sendVote(@user.Id, false)">  <h3 class="text-danger"><i class="fa fa-thumbs-down"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(user.Id))</h3></a>
+                                            <a href="#" onclick="sendVote(@user.Id, false)">  <h3  class="text-danger"><i class="fa fa-thumbs-down"></i>&nbsp;<span id="downVotesCount">@Math.Abs(VoteUserService.GetDownVote(user.Id))</span></h3></a>
                                         </div>
                                     }
                                     else
@@ -493,7 +501,7 @@
                 }
 
             }
-            else if (this.ViewBag.Specialty != "Specialty")
+            else if (this.ViewBag.Specialty != "Специалност")
             {
                 @foreach (var user in Model.Users)
                 {
@@ -746,11 +754,11 @@
     {
         name = "1 " + ViewBag.Search + " " + ViewBag.Region;
     }
-    else if (ViewBag.Search != null && ViewBag.Specialty != null && ViewBag.Specialty != "Specialty")
+    else if (ViewBag.Search != null && ViewBag.Specialty != null && ViewBag.Specialty != "Специалност")
     {
         name = "2 " + ViewBag.Search + " " + ViewBag.Specialty;
     }
-    else if (ViewBag.Specialty != null && ViewBag.Region != null && ViewBag.Specialty != "Specialty")
+    else if (ViewBag.Specialty != null && ViewBag.Region != null && ViewBag.Specialty != "Специалност")
     {
         name = "3 " + ViewBag.Region + " " + ViewBag.Specialty;
     }
@@ -764,7 +772,7 @@
         name = ViewBag.Region;
         searchId = "region";
     }
-    else if (ViewBag.Specialty != null && ViewBag.Specialty != "Specialty")
+    else if (ViewBag.Specialty != null && ViewBag.Specialty != "Специалност")
     {
         name = ViewBag.Specialty;
         searchId = "specialty";
@@ -839,7 +847,8 @@
             dataType: "json",
             headers: { 'X-CSRF-TOKEN': token },
             success: function (data) {
-                $("#votesCount").html(data.votesCount);
+                $("#upVotesCount").html(data.upVotesCount);
+                $("#downVotesCount").html(data.votesDownCount);
             }
         });
     }

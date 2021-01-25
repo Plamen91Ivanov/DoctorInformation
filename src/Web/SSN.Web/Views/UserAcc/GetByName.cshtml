@@ -141,15 +141,15 @@
                         <div class="ml-3 row">
                             <div class="col-6">
                                 <div class="row">
-                                    <div id="upVotesCount">
-                                        <a href="#" onclick="sendVote(@Model.Id,true)"><h3 class="text-success">  <i class="fa fa-thumbs-up"></i>&nbsp; @VoteUserService.GetVote(Model.Id)</h3></a>
+                                    <div>
+                                        <a href="#" onclick="sendVote(@Model.Id,true)"><h3 class="text-success">  <i class="fa fa-thumbs-up"></i>&nbsp; <span id="upVotesCount">@VoteUserService.GetVote(Model.Id)</span></h3></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-5">
                                 <div class="row">
-                                    <div id="votesDownCount">
-                                        <a href="#" onclick="sendVote(@Model.Id, false)"><h3 class="text-danger"><i class="fa fa-thumbs-down text-"></i>&nbsp; @Math.Abs(VoteUserService.GetDownVote(Model.Id))</h3> </a>
+                                    <div >
+                                        <a href="#" onclick="sendVote(@Model.Id, false)"><h3 class="text-danger"><i class="fa fa-thumbs-down text-"></i>&nbsp; <span id="downVotesCount">@Math.Abs(VoteUserService.GetDownVote(Model.Id))</span></h3> </a>
                                     </div>
                                 </div>
                             </div>
@@ -388,28 +388,9 @@
                 dataType: "json",
                 headers: { 'X-CSRF-TOKEN': token },
                 success: function (data) { 
+                    console.log(data);
                     $("#upVotesCount").html(data.upVotesCount);
-                    $("#votesDownCount").html(data.votesDownCount);
-                }
-            });
-        }
-
-        function sendPostVote(PostId, isUpVote) {
-            var token = $("#votesForm input[name=__RequestVerificationToken]").val();
-            var json = { PostId: PostId, isUpVote: isUpVote };
-            console.log(json);
-            $.ajax({
-                url: "/api/postVotes",
-                type: "POST",
-                data: JSON.stringify(json),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: { 'X-CSRF-TOKEN': token },
-                success: function (data) {
-                    console.log(data.upVotesCount);
-                    console.log(data.downVotesCount);
-                    $("#UpPostVotesCount").html(data.upVotesCount);
-                    $("#DownPostVotesCount").html(data.downVotesCount);
+                    $("#downVotesCount").html(data.votesDownCount);
                 }
             });
         }

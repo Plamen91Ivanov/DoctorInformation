@@ -87,18 +87,38 @@ namespace SSN.Services.Data
 
         public IEnumerable<T> GetMostVoted<T>(List<int> mostVotedDocsId)
         {
-            var mostVoted = this.addRepository.All().Where(x => x.Id == mostVotedDocsId[0] || x.Id == mostVotedDocsId[1] || x.Id == mostVotedDocsId[2])
-            .To<T>().ToList();
+            var mostVotedCount = mostVotedDocsId.Count();
+            if (mostVotedCount < 3)
+            {
+                var mostVoted = this.addRepository.All().Take(3).To<T>().ToList();
 
-            return mostVoted;
+                return mostVoted;
+            }
+            else
+            {
+                var mostVoted = this.addRepository.All().Where(x => x.Id == mostVotedDocsId[0] || x.Id == mostVotedDocsId[1] || x.Id == mostVotedDocsId[2])
+                .To<T>().ToList();
+
+                return mostVoted;
+            }
+
         }
 
         public IEnumerable<T> GetMostComment<T>(List<int> mostCommentDoc)
         {
-            var mostComment = this.addRepository.All().Where(x => x.Id == mostCommentDoc[0] || x.Id == mostCommentDoc[1] || x.Id == mostCommentDoc[2])
-                .To<T>().ToList();
+            var mostCommentCount = mostCommentDoc.Count();
+            if (mostCommentCount < 3)
+            {
+                var mostComment = this.addRepository.All().Take(3).To<T>().ToList();
+                return mostComment;
+            }
+            else
+            {
+                var mostComment = this.addRepository.All().Where(x => x.Id == mostCommentDoc[0] || x.Id == mostCommentDoc[1] || x.Id == mostCommentDoc[2])
+                    .To<T>().ToList();
+                return mostComment;
+            }
 
-            return mostComment;
         }
 
         public T GetById<T>(string name)
@@ -147,7 +167,7 @@ namespace SSN.Services.Data
 
         public int SearchCount(string search, string region, string specialty)
         {
-            if (search != null && region != null && specialty != "Specialty" && specialty != null)
+            if (search != null && region != null && specialty != "Специалност" && specialty != null)
             {
                 var count = this.addRepository.All().Where(x => x.City.Contains(region) && x.Name.Contains(search) && x.Specialty.Contains(specialty)).Count();
                 return count;
@@ -157,17 +177,17 @@ namespace SSN.Services.Data
                 var count = this.addRepository.All().Where(x => x.City.Contains(region) && x.Name.Contains(search)).Count();
                 return count;
             }
-            else if (search != null && specialty != "Specialty" && specialty != null)
+            else if (search != null && specialty != "Специалност" && specialty != null)
             {
                 var count = this.addRepository.All().Where(x => x.Name.Contains(search) && x.Specialty.Contains(specialty)).Count();
                 return count;
             }
-            else if (region != null && specialty != "Specialty" && specialty != null)
+            else if (region != null && specialty != "Специалност" && specialty != null)
             {
                 var count = this.addRepository.All().Where(x => x.City.Contains(region) && x.Specialty.Contains(specialty)).Count();
                 return count;
             }
-            else if (specialty != "Specialty" && specialty != null)
+            else if (specialty != "Специалност" && specialty != null)
             {
                 var specialtyCount = this.addRepository.All().Where(x => x.Specialty.Contains(specialty)).Count();
                 return specialtyCount;
@@ -385,94 +405,94 @@ namespace SSN.Services.Data
             for (int cityNumber = 2; cityNumber <= 2; cityNumber++)
             {
                 var city = "";
-                
-                    switch (cityNumber)
-                    {
-                        case 2:
-                            city = "Благоевград";
-                            break;
-                        case 3:
-                            city = "Бургас";
-                            break;
-                        case 4:
-                            city = "Варна";
-                            break;
-                        case 5:
-                            city = "Велико Търново";
-                            break;
-                        case 6:
-                            city = "Видин";
-                            break;
-                        case 7:
-                            city = "Враца";
-                            break;
-                        case 8:
-                            city = "Габрово";
-                            break;
-                        case 9:
-                            city = "Добрич";
-                            break;
-                        case 10:
-                            city = "Кърджали";
-                            break;
-                        case 11:
-                            city = "Кюстендил";
-                            break;
-                        case 12:
-                            city = "Ловеч";
-                            break;
-                        case 13:
-                            city = "Монтана";
-                            break;
-                        case 14:
-                            city = "Пазарджик";
-                            break;
-                        case 15:
-                            city = "Перник";
-                            break;
-                        case 16:
-                            city = "Плевен";
-                            break;
-                        case 17:
-                            city = "Пловдив";
-                            break;
-                        case 18:
-                            city = "Разград";
-                            break;
-                        case 19:
-                            city = "Русе";
-                            break;
-                        case 20:
-                            city = "Силистра";
-                            break;
-                        case 21:
-                            city = "Сливен";
-                            break;
-                        case 22:
-                            city = "Смолян";
-                            break;
-                        case 23:
-                            city = "София";
-                            break;
-                        case 24:
-                            city = "София-област";
-                            break;
-                        case 25:
-                            city = "Стара Загора";
-                            break;
-                        case 26:
-                            city = "Търговище";
-                            break;
-                        case 27:
-                            city = "Хасково";
-                            break;
-                        case 28:
-                            city = "Шумен";
-                            break;
-                        case 29:
-                            city = "Ямбол";
-                            break;
-                    }
+
+                switch (cityNumber)
+                {
+                    case 2:
+                        city = "Благоевград";
+                        break;
+                    case 3:
+                        city = "Бургас";
+                        break;
+                    case 4:
+                        city = "Варна";
+                        break;
+                    case 5:
+                        city = "Велико Търново";
+                        break;
+                    case 6:
+                        city = "Видин";
+                        break;
+                    case 7:
+                        city = "Враца";
+                        break;
+                    case 8:
+                        city = "Габрово";
+                        break;
+                    case 9:
+                        city = "Добрич";
+                        break;
+                    case 10:
+                        city = "Кърджали";
+                        break;
+                    case 11:
+                        city = "Кюстендил";
+                        break;
+                    case 12:
+                        city = "Ловеч";
+                        break;
+                    case 13:
+                        city = "Монтана";
+                        break;
+                    case 14:
+                        city = "Пазарджик";
+                        break;
+                    case 15:
+                        city = "Перник";
+                        break;
+                    case 16:
+                        city = "Плевен";
+                        break;
+                    case 17:
+                        city = "Пловдив";
+                        break;
+                    case 18:
+                        city = "Разград";
+                        break;
+                    case 19:
+                        city = "Русе";
+                        break;
+                    case 20:
+                        city = "Силистра";
+                        break;
+                    case 21:
+                        city = "Сливен";
+                        break;
+                    case 22:
+                        city = "Смолян";
+                        break;
+                    case 23:
+                        city = "София";
+                        break;
+                    case 24:
+                        city = "София-област";
+                        break;
+                    case 25:
+                        city = "Стара Загора";
+                        break;
+                    case 26:
+                        city = "Търговище";
+                        break;
+                    case 27:
+                        city = "Хасково";
+                        break;
+                    case 28:
+                        city = "Шумен";
+                        break;
+                    case 29:
+                        city = "Ямбол";
+                        break;
+                }
                 var numberOfDoctors = 1.0;
 
                 for (var page = 1; page <= 1; page++)
