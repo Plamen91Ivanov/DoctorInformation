@@ -10,8 +10,11 @@ Functionality
   
  -write comments
   
- -remove comment(if you are admin)
+ -remove comment(admin only)
+ 
+ -add Doctor(Admin only)
   
  -voting system
   
+  -pagination 
  
