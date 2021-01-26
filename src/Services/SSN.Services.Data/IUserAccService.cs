@@ -53,10 +53,6 @@ namespace SSN.Services.Data
                string ImagePath,
                string id
                );
-
-        Task<int> AddDoctor(int fromId, int toId);
-
-        Task<int> AddAsyncDoctor();
-
+         
     }
 }

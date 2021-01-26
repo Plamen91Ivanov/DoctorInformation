@@ -45,7 +45,7 @@ namespace SSN.Web.Controllers
         public IActionResult AddUser()
         {
             var addViewModel = new UserAccViewModel();
-
+              
             return this.View(addViewModel);
         }
 
@@ -64,7 +64,7 @@ namespace SSN.Web.Controllers
                uniqueFileName = Guid.NewGuid().ToString() + "_" + input.Photo.FileName;
                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
                input.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-
+-
                var addUser = await this.addService.AddAsync(
                input.Email,
                input.Name,

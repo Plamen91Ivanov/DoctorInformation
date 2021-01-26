@@ -284,6 +284,7 @@ namespace SSN.Services.Data
                 City = city,
                 Specialty = specialty,
                 FilePath = uniqueFileName,
+                UIN = 0,
             };
 
             await this.addRepository.AddAsync(addDoc);
@@ -311,89 +312,5 @@ namespace SSN.Services.Data
             return addPhoto.Id;
         }
 
-        public async Task<int> AddDoctor(int fromId, int toId)
-        {
-            var parser = new AngleSharp.Html.Parser.HtmlParser();
-            var client = new HttpClient();
-
-
-            for (var page = fromId; page <= toId; page++)
-            {
-                Console.Write('^');
-                var url = $"https://bestdoctors.bg/doctors/p/{page}";
-                string html = null;
-                for (var i = 0; i < 10; i++)
-                {
-                    try
-                    {
-                        var response = await client.GetAsync(url);
-                        html = await response.Content.ReadAsStringAsync();
-                        break;
-                    }
-                    catch
-                    {
-                        Console.Write('!');
-                        Thread.Sleep(500);
-                    }
-                }
-
-                if (string.IsNullOrWhiteSpace(html))
-                {
-                    continue;
-                }
-
-                var document = parser.ParseDocument(html);
-                var docBox = document.GetElementsByClassName("docbox");
-                foreach (var item in docBox)
-                {
-                    var docNameCollection = item.GetElementsByTagName("h4");
-                    var docName = docNameCollection[0].TextContent.Replace("\n", string.Empty).Trim();
-
-                    var cityCollection = item.GetElementsByTagName("p");
-                    var cityReplace = cityCollection[1].TextContent.Replace(",", string.Empty);
-                    var city = cityReplace.Replace("\n", string.Empty).Trim();
-
-                    var specialtyCollection = item.GetElementsByTagName("span");
-                    var specialty = specialtyCollection[0].TextContent.Replace("\n", string.Empty).Trim();
-
-                    var imageCollection = item.GetElementsByTagName("img");
-                    var imageAttributes = imageCollection[0].Attributes;
-                    var imageSrc = imageAttributes[0].Value;
-
-                    var hospitalCollection = item.GetElementsByTagName("a");
-                    if (hospitalCollection.Length > 1)
-                    {
-                        var hospital = hospitalCollection[1].TextContent.Replace("\n", string.Empty).Trim();
-
-                        var addDoctor = new UserAcc()
-                        {
-                            Name = docName,
-                            City = city,
-                            SecondName = hospital,
-                            Specialty = specialty,
-                            FilePath = imageSrc,
-                        };
-
-                        await this.addRepository.AddAsync(addDoctor);
-                    }
-                    else
-                    {
-                        var addDoctor = new UserAcc()
-                        {
-                            Name = docName,
-                            City = city,
-                            Specialty = specialty,
-                            FilePath = imageSrc,
-                        };
-
-                        await this.addRepository.AddAsync(addDoctor);
-                    }
-                }
-            }
-
-            await this.addRepository.SaveChangesAsync();
-
-            return 1;
-        } 
     }
 }
